@@ -24,5 +24,5 @@ export const LIMITED_FORMAT = "limited";
 export const STANDARD_FORMAT = "standard";
 export const DEFAULT_FORMAT = LIMITED_FORMAT;
 
-export const DEFAULT_LIMITED_MAX_POINTS = 17;
-export const CURRENT_PATCH = "v2025.03";
+export const DEFAULT_LIMITED_MAX_POINTS = 10;
+export const CURRENT_PATCH = "v2025.03-custom-etrurian";

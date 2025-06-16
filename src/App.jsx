@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PartSelector from './PartSelector';
 import Beyblade from './Beyblade';
 
-import { BLADES, ASSIST_BLADES, RATCHETS, BITS, LIMITED_FORMAT, STANDARD_FORMAT, DEFAULT_LIMITED_MAX_POINTS, BEYBLADE_DB, DEFAULT_FORMAT, CURRENT_PATCH } from './constants';
+import { BLADES, LIMITED_FORMAT, DEFAULT_LIMITED_MAX_POINTS, BEYBLADE_DB, DEFAULT_FORMAT } from './constants';
 
-import bbxBanner from './assets/banner.png'
+import bbxBanner from './assets/etrurian-logo-with-subtitle.png'
 import { useSearchParams } from 'react-router-dom';
 import { toPng } from 'html-to-image';
 
@@ -20,10 +20,13 @@ function LimitedFormatPoints({ format, totalPoints, maximumPointsLimited }) {
 
   return (
     <div className='sticky top-0 right-0 text-center bg-white'>
-      <p className={`${textColor} font-semibold`}>
+
+      <p className={`${textColor} font-semibold text-lg`}>
         Total Points: {totalPoints}/{maximumPointsLimited}
       </p>
     </div>
+
+
   )
 }
 
@@ -78,6 +81,13 @@ function App() {
   const [partsUsed, setPartsUsed] = useState([]);
   const [totalPoints, setTotalPoints] = useState(0);
   const [beyblades, setBeyblades] = useState([]);
+
+  // Alert when points exceed maximum in limited format
+  useEffect(() => {
+    if (currentFormat === LIMITED_FORMAT && totalPoints > maximumPointsLimited) {
+      window.alert(`Warning: Total points (${totalPoints}) exceeds the maximum allowed (${maximumPointsLimited})`);
+    }
+  }, [totalPoints, currentFormat, maximumPointsLimited]);
 
   // Clear search params
   useEffect(() => {
@@ -150,12 +160,6 @@ function App() {
       return
     }
 
-    if (partsUsed.length !== (beybladeCount * 3)) {
-      console.log(`${partsUsed.length} !=== ${(beybladeCount * 3)}`)
-      window.alert('Please fill up all parts')
-      return
-    }
-
     beyComboParentRef.current.style = 'display: block';
     toPng(beyComboRef.current, { cacheBust: true, backgroundColor: '#ffffff' })
       .then((dataUrl) => {
@@ -171,17 +175,7 @@ function App() {
       .finally(() => {
         beyComboParentRef.current.style = 'display: hidden';
       })
-
-    // toBlob(theRef.current, { cacheBust: true, backgroundColor: '#ffffff' })
-    //   .then((dataUrl) => {
-    //     const link = document.createElement('a')
-    //     link.download = 'my-image-name.png'
-    //     link.href = dataUrl
-    //     link.click()
-    //   })
-
-
-  }, [partsUsed, beyComboRef])
+  }, [beyComboRef])
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -189,43 +183,30 @@ function App() {
       <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
 
 
-        <h1 className="text-2xl font-bold mb-6 text-center">BeyBrew
+        {/* <h1 className="text-2xl font-bold mb-6 text-center">
           {currentFormat === LIMITED_FORMAT ?
             <div className="text-xs font-bold text-sky-500">{CURRENT_PATCH}</div>
             : null
           }
-        </h1>
+        </h1> */}
 
         <img src={bbxBanner} className="mb-6" />
 
-        <LimitedFormatPoints format={currentFormat} totalPoints={totalPoints} maximumPointsLimited={maximumPointsLimited} />
-        <div className='mb-4'>
+
+      <p className={` font-semibold text-lg text-center`}>
+        Regole Side Event:
+      </p>
+      <p className={` font-semibold  text-center`}>
+      
+      Ogni partecipante dovrà costruire un deck composto da lame Hasbro Limited, rispettando un limite massimo di 10 punti totali, secondo il sistema di punteggio da noi assegnato alle varie lame. Il deck scelto dovrà essere comunicato prima dell’inizio del torneo e non potrà essere modificato durante la competizione. Le partite seguiranno le regole ufficiali IBNA, con scontri a 4 punti.
+      </p>
+      <br />
+        <LimitedFormatPoints format={currentFormat} totalPoints={totalPoints} maximumPointsLimited={maximumPointsLimited} beybladeCount={beybladeCount} />
+        
+        
 
 
-          <form id="beybladeForm" className="space-y-6">
-            <div>
-              <label htmlFor="beybladeCount" className="block text-sm font-medium text-gray-700">Number of Beyblades</label>
-              <input type="number" id="beybladeCount" name="beybladeCount" min="1" max="10" value={beybladeCount} onChange={(e) => setBeybladeCount(Number(e.target.value))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-            </div>
-
-            {/* <!-- Format --> */}
-            <div>
-              <label htmlFor="format" className="block text-sm font-medium text-gray-700">Format</label>
-              <select id="format" name="format" defaultValue={DEFAULT_FORMAT} onChange={(e) => setCurrentFormat(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                <option value={STANDARD_FORMAT}>Standard (No Repeating Parts)</option>
-                <option value={LIMITED_FORMAT}>Limited (No Repeating Parts w/ Homebrew Point System)</option>
-              </select>
-            </div>
-
-            {/* <!-- Maximum Points --> */}
-            {currentFormat === LIMITED_FORMAT ? (
-              <div>
-                <label htmlFor="maxPoints" className="block text-sm font-medium text-gray-700">Maximum Points Allowed</label>
-                <input type="number" id="maxPoints" name="maxPoints" min="1" value={maximumPointsLimited} onChange={(e) => setMaximumPointsLimited(Number(e.target.value))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-              </div>) : null
-            }
-          </form>
-        </div>
+        
         <div className="space-y-6">
           {Array(beybladeCount).fill(null).map((_, index) => {
             return (
@@ -240,40 +221,8 @@ function App() {
                   currentFormat={currentFormat}
                 />
 
-
-                {BEYBLADE_DB[beyblades[index]?.blade]?.line == "CX" &&
-                  <PartSelector
-                    label="Assist Blade"
-                    options={ASSIST_BLADES}
-                    value={beyblades[index]?.assistBlade}
-                    onChange={(value) => handlePartChange(index, 'assistBlade', value)}
-                    partsUsed={partsUsed}
-                    currentFormat={currentFormat}
-                  />
-                }
-
-
-                <PartSelector
-                  label="Ratchet"
-                  options={RATCHETS}
-                  value={beyblades[index]?.ratchet}
-                  onChange={(value) => handlePartChange(index, 'ratchet', value)}
-                  partsUsed={partsUsed}
-                  currentFormat={currentFormat}
-                />
-                <PartSelector
-                  label="Bit"
-                  options={BITS}
-                  value={beyblades[index]?.bit}
-                  onChange={(value) => handlePartChange(index, 'bit', value)}
-                  partsUsed={partsUsed}
-                  currentFormat={currentFormat}
-                />
                 <Beyblade
                   blade={beyblades[index]?.blade}
-                  assistBlade={beyblades[index]?.assistBlade}
-                  ratchet={beyblades[index]?.ratchet}
-                  bit={beyblades[index]?.bit}
                   format={currentFormat}
                 />
               </div>
@@ -309,7 +258,12 @@ function App() {
             })}
           </ul>
         </div>
-
+        <div className="mt-6 text-center flex justify-center gap-2">
+          <p className={`text-sm ${currentFormat === LIMITED_FORMAT && totalPoints > maximumPointsLimited ? 'text-red-600 font-semibold' : ''}`}>
+            Total Points: {totalPoints}
+            {currentFormat === LIMITED_FORMAT && totalPoints > maximumPointsLimited ? ` (Exceeds maximum of ${maximumPointsLimited})` : ''}
+          </p>
+        </div>
         <div className="mt-6 text-center flex justify-center gap-2">
           <button
             onClick={handleShareButton}
@@ -335,12 +289,13 @@ function App() {
 
         <footer className="text-sm text-center mt-6">
           <div>
-            Made with <span className='text-red-500'>&hearts;</span> in Davao, Philippines &#127477;&#127469;
+            Made with <span className='text-red-500'>&hearts;</span> by <a href="https://github.com/yujinyuz/beybrew" target="_blank" rel="noreferrer noopener" className='text-blue-500'>yujinyuz</a>
           </div>
           <div>
-            <p>Source available on GitHub <a target="_blank" rel="noreferrer noopener" href="https://github.com/yujinyuz/beybrew">@yujinyuz/beybrew</a></p>
-            <p>Follow us on <a target="_blank" rel="noreferrer noopener" className='text-blue-500' href="https://www.facebook.com/bbxdc">Facebook</a></p>
-            <p><a target="_blank" rel="noreferrer noopener" className='text-blue-500' href="https://buymeacoffee.com/yujinyuz">Buy me a coffe ☕</a></p>
+            Modded by <a href="https://trafitto.com" target="_blank" rel="noreferrer noopener" className='text-blue-500'>Trafitto</a> with 😠, for Etrurian Bey club.
+          </div>
+          <div>
+            <p>Source available on GitHub <a target="_blank" rel="noreferrer noopener" className='text-blue-500' href="https://github.com/Trafitto/beybrew">@trafitto/beybrew</a></p>
           </div>
         </footer>
 
@@ -348,7 +303,12 @@ function App() {
 
       <div className={`w-max hidden`} ref={beyComboParentRef}>
         <ul ref={beyComboRef} role="list" className="flex flex-row divide-y divide-gray-100">
-
+          <div className="text-center mb-4">
+            <p className={`text-sm font-semibold ${currentFormat === LIMITED_FORMAT && totalPoints > maximumPointsLimited ? 'text-red-600' : 'text-gray-900'}`}>
+              Total Points: {totalPoints}
+              {currentFormat === LIMITED_FORMAT && totalPoints > maximumPointsLimited ? ` (Exceeds maximum of ${maximumPointsLimited})` : ''}
+            </p>
+          </div>
           {Array(beybladeCount).fill(null).map((_, index) => {
 
             const spinType = BEYBLADE_DB[beyblades[index]?.blade]?.spinType || 'right'
