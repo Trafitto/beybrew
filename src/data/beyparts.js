@@ -220,13 +220,41 @@ const parts = {
     },
     {
       name: "Tusk Mammoth",
-      points: 3,
+      points: 2,
       attack: 35,
       defense: 35,
       stamina: 32,
       type: "balance",
       image: "Tusk_Mammoth_3-60T.webp",
     },
+    {
+      name: "Yell Kong",
+      points: 2,
+      attack: 13,
+      defense: 37,
+      stamina: 50,
+      type: "stamina",
+      image: "Yell_Kong_3-60GB.webp",
+    },
+    {
+      name: "Steel Samurai",
+      points: 2,
+      attack: 40,
+      defense: 37,
+      stamina: 23,
+      type: "balance",
+      image: "Steel_Samurai_4-80T.webp",
+    },
+    {
+      name: "Bite Croc",
+      points: 2,
+      attack: 60,
+      defense: 22,
+      stamina: 18,
+      type: "attack",
+      image: "Bite_Croc_3-60LF.webp",
+    },
+
   ],
   assist_blades: [
     {

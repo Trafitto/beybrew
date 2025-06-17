@@ -178,7 +178,7 @@ function App() {
   }, [beyComboRef])
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="p-8 bg-[#3d1172] min-h-screen">
 
       <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
 
@@ -200,6 +200,7 @@ function App() {
       
       Ogni partecipante dovrà costruire un deck composto da lame Hasbro Limited, rispettando un limite massimo di 10 punti totali, secondo il sistema di punteggio da noi assegnato alle varie lame. Il deck scelto dovrà essere comunicato prima dell’inizio del torneo e non potrà essere modificato durante la competizione. Le partite seguiranno le regole ufficiali IBNA, con scontri a 4 punti.
       </p>
+      <p className={` text-center`}>*I beyblade Hasbro in collaborazione (Marvel, StarWars, ecc) sono ammessi il loro punteggio e' lo stesso di quello delle lame originali</p>
       <br />
         <LimitedFormatPoints format={currentFormat} totalPoints={totalPoints} maximumPointsLimited={maximumPointsLimited} beybladeCount={beybladeCount} />
         
