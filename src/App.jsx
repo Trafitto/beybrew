@@ -4,7 +4,7 @@ import Beyblade from './Beyblade';
 
 import { BLADES, LIMITED_FORMAT, DEFAULT_LIMITED_MAX_POINTS, BEYBLADE_DB, DEFAULT_FORMAT } from './constants';
 
-import bbxBanner from './assets/etrurian-logo-with-subtitle.png'
+import bbxBanner from './assets/etrurian-logo.png'
 import { useSearchParams } from 'react-router-dom';
 import { toPng } from 'html-to-image';
 
