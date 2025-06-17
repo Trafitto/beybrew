@@ -85,7 +85,7 @@ function App() {
   // Alert when points exceed maximum in limited format
   useEffect(() => {
     if (currentFormat === LIMITED_FORMAT && totalPoints > maximumPointsLimited) {
-      window.alert(`Warning: Total points (${totalPoints}) exceeds the maximum allowed (${maximumPointsLimited})`);
+      window.alert(`Attenzione: I punti totali (${totalPoints}) superano il limite massimo (${maximumPointsLimited})`);
     }
   }, [totalPoints, currentFormat, maximumPointsLimited]);
 
@@ -139,7 +139,7 @@ function App() {
 
     navigator.clipboard.writeText(url.toString())
       .then(() => {
-        window.alert('Successfully copied to clipboard!')
+        window.alert('Copiato negli appunti!')
         console.log("URL copied to clipboard: ", url.toString())
       })
       .catch(err => {
