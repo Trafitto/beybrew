@@ -254,6 +254,24 @@ const parts = {
       type: "attack",
       image: "Bite_Croc_3-60LF.webp",
     },
+    {
+      name: "Dranzer Spiral",
+      points: 2,
+      attack: 35,
+      defense: 30,
+      stamina: 35,
+      type: "balance",
+      image: "DranzerF.webp",
+    },
+    {
+      name: "Hover Wyvern",
+      points: 3,
+      attack: 13,
+      defense: 60,
+      stamina: 27,
+      type: "defense",
+      image: "Hover_Wyvern_3-85N.jpg",
+    },
 
   ],
   assist_blades: [
