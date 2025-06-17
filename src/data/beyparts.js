@@ -218,6 +218,15 @@ const parts = {
       type: "stamina",
       image: "Wyvern_Gale_5-80GB.webp",
     },
+    {
+      name: "Tusk Mammoth",
+      points: 3,
+      attack: 35,
+      defense: 35,
+      stamina: 32,
+      type: "balance",
+      image: "Tusk_Mammoth_3-60T.webp",
+    },
   ],
   assist_blades: [
     {
